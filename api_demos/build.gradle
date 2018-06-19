@@ -1,0 +1,42 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("ASN_KEYSTORE"))
+            storePassword System.getenv("ASN_KEYSTORE_PASSWORD")
+            keyAlias System.getenv("ASN_KEY_ALIAS")
+            keyPassword System.getenv("ASN_KEY_PASSWORD")
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+
+    // for displaying avatars
+    compile 'com.squareup.picasso:picasso:2.2.0@jar'
+    // to display facebook avatar: https://github.com/square/picasso/issues/166
+    compile 'com.squareup.okhttp:okhttp:1.5.4@jar'
+}
